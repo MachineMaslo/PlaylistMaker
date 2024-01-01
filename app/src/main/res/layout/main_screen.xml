@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/main_screen_bg_color"
+        android:orientation="vertical"
+        android:paddingLeft="20dp"
+        android:paddingTop="15dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="25dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp">
+
+        <TextView
+            android:id="@+id/appTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="25dp"
+            android:fontFamily="@font/google_sans_medium"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_text_size" />
+
+        <LinearLayout
+            android:id="@+id/buttonsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/searchButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2.5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/google_sans_medium"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/search_title"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_size"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/search_icon"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_size"
+                app:iconTint="@color/text_color" />
+
+            <Button
+                android:id="@+id/libraryButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2.5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/google_sans_medium"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/library_title"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_size"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/music_icon"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_size"
+                app:iconTint="@color/text_color" />
+
+            <Button
+                android:id="@+id/settingsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="2.5dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:fontFamily="@font/google_sans_medium"
+                android:foreground="?attr/selectableItemBackground"
+                android:text="@string/settings_title"
+                android:textAllCaps="false"
+                android:textColor="@color/text_color"
+                android:textSize="@dimen/title_text_size"
+                app:cornerRadius="20dp"
+                app:icon="@drawable/settings_icon"
+                app:iconGravity="textStart"
+                app:iconSize="@dimen/icon_size"
+                app:iconTint="@color/text_color" />
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,79 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity">
-
-    <LinearLayout
-        android:id="@+id/screenLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="5dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="1dp">
+    tools:context=".SettingsActivity"
+    android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/titleLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
+            android:layout_marginVertical="@dimen/title_marginbottom"
             android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/returnButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:backgroundTint="#00FFFFFF"
+                android:layout_width="@dimen/return_button_size"
+                android:layout_height="@dimen/return_button_size"
+                android:backgroundTint="@color/clear"
                 android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/arrow_back_icon" />
+                android:src="@drawable/arrow_back_icon"
+                android:layout_marginRight="@dimen/return_button_marginright"/>
 
             <TextView
-                android:id="@+id/title"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:fontFamily="@font/google_sans_medium"
                 android:gravity="center_vertical"
-                android:paddingStart="10dp"
-                android:paddingEnd="10dp"
                 android:text="@string/settings_title"
                 android:textColor="@color/text_color"
-                android:textSize="@dimen/title_text_size" />
+                android:textSize="@dimen/title_text_size"/>
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/settingsLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/screen_padding">
 
             <Switch
                 android:id="@+id/darkTheme"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/google_sans_regular"
-                android:padding="20dp"
-                android:paddingEnd="15dp"
                 android:text="Темная тема"
                 android:textColor="@color/text_color"
                 android:textSize="@dimen/regular_text_size"
                 android:thumb="@drawable/knob"
-                android:trackTint="#D7DADD" />
+                android:trackTint="@color/switch_track_color"
+                android:layout_marginVertical="@dimen/list_elements_marginvertical"/>
 
             <LinearLayout
                 android:id="@+id/shareApp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:layout_marginVertical="@dimen/list_elements_marginvertical">
 
                 <TextView
-                    android:id="@+id/textView2"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="@dimen/settings_imagebutton_size"
                     android:layout_weight="1"
                     android:fontFamily="@font/google_sans_regular"
                     android:gravity="center_vertical"
@@ -95,12 +82,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:layout_marginVertical="@dimen/list_elements_marginvertical">
 
                 <TextView
-                    android:id="@+id/textView3"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="@dimen/settings_imagebutton_size"
                     android:layout_weight="1"
                     android:fontFamily="@font/google_sans_regular"
                     android:gravity="center_vertical"
@@ -109,8 +95,7 @@
                     android:textSize="@dimen/regular_text_size" />
 
                 <ImageButton
-                    android:id="@+id/imageButton3"
-                    android:layout_width="24dp"
+                    android:layout_width="@dimen/settings_imagebutton_size"
                     android:layout_height="@dimen/settings_imagebutton_size"
                     android:backgroundTint="@color/clear"
                     android:foreground="?attr/selectableItemBackground"
@@ -123,12 +108,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:padding="20dp">
+                android:layout_marginVertical="@dimen/list_elements_marginvertical">
 
                 <TextView
-                    android:id="@+id/textView4"
                     android:layout_width="0dp"
-                    android:layout_height="24dp"
+                    android:layout_height="@dimen/settings_imagebutton_size"
                     android:layout_weight="1"
                     android:fontFamily="@font/google_sans_regular"
                     android:gravity="center_vertical"
@@ -137,13 +121,12 @@
                     android:textSize="@dimen/regular_text_size" />
 
                 <ImageButton
-                    android:id="@+id/imageButton4"
                     android:layout_width="@dimen/settings_imagebutton_size"
                     android:layout_height="@dimen/settings_imagebutton_size"
                     android:backgroundTint="@color/clear"
                     android:foreground="?attr/selectableItemBackground"
                     android:src="@drawable/arrow_forward_icon" />
             </LinearLayout>
-        </LinearLayout>
+
     </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

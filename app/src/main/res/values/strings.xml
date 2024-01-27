@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Playlist Maker</string>
+    <string name="app_name" translatable="false">Playlist Maker</string>
+
+    <string name="search_title" translatable="true">Поиск</string>
+    <string name="library_title" translatable="true">Медиатека</string>
+    <string name="settings_title" translatable="true">Настройки</string>
+
+    <string name="search_is_in_development" translatable="true">Поиск находится \n в разработке</string>
+    <string name="library_is_in_development" translatable="true">Медиатека находится \n в разработке</string>
 </resources>

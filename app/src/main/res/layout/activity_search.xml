@@ -1,16 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fontFamily="@font/google_sans_medium"
-        android:gravity="center"
-        android:text="@string/search_is_in_development"
-        android:textColor="@color/text_color"
-        android:textSize="@dimen/title_text_size"/>
-</FrameLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/title_marginbottom"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/returnButton"
+            style="@style/returnbutton_style" />
+
+        <TextView
+            style="@style/title_style"
+            android:text="@string/search_title" />
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/screen_padding">
+
+        <EditText
+            android:id="@+id/searchEditText"
+            style="@style/edittext_style"
+            android:layout_width="match_parent"
+            android:drawableLeft="@drawable/search_icon"
+            android:hint="@string/search_title"
+            android:inputType="text" />
+
+        <ImageButton
+            android:id="@+id/cancelSearch"
+            style="@style/setting_imagebutton_style"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/cancel"
+            app:tint="@color/edittext_hint_color" />
+    </FrameLayout>
+
+</LinearLayout>

@@ -7,4 +7,14 @@
 
     <string name="search_is_in_development" translatable="true">Поиск находится \n в разработке</string>
     <string name="library_is_in_development" translatable="true">Медиатека находится \n в разработке</string>
+
+    <string name="darkTheme" translatable="true">Темная тема</string>
+    <string name="shareApp" translatable="true">Поделиться приложением</string>
+    <string name="writeToSupport" translatable="true">Написать в поддержку</string>
+    <string name="termsOfUse" translatable="true">Пользовательское соглашение</string>
+
+    <string name="android_developer_course" translatable="true">https://practicum.yandex.ru/android-developer/</string>
+    <string name="practicum_offer" translatable="true">"https://yandex.ru/legal/practicum_offer/"</string>
+    <string name="mail_subject" translatable="true">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mail_text" translatable="true">Спасибо разработчикам и разработчицам за крутое приложение!</string>
 </resources>

@@ -31,13 +31,25 @@
         android:orientation="vertical"
         android:padding="@dimen/screen_padding">
 
-        <com.google.android.material.switchmaterial.SwitchMaterial
-            android:id="@+id/darkThemeSwitch"
-            style="@style/switch_style"
+        <LinearLayout
+            android:id="@+id/darkTheme"
+            style="@style/list_element_style"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/settings_imagebutton_size"
-            android:layout_marginVertical="@dimen/list_elements_marginvertical"
-            android:text="@string/termsOfUse" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="@string/darkTheme" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/darkThemeSwitch"
+                style="@style/switch_style"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_imagebutton_size" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/shareApp"

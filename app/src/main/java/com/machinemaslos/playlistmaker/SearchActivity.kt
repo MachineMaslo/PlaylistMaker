@@ -69,7 +69,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val SEARCH_TEXT = "SEARCH_TEXT"
-        const val DEFAULT_TEXT = ""
+        private const val SEARCH_TEXT = "SEARCH_TEXT"
+        private const val DEFAULT_TEXT = ""
     }
 }

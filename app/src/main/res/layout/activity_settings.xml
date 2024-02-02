@@ -1,132 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingsActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".SettingsActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="@dimen/title_marginbottom"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/returnButton"
+            style="@style/returnbutton_style"
+            android:layout_width="@dimen/return_button_size"
+            android:layout_height="@dimen/return_button_size" />
+
+        <TextView
+            style="@style/title_style"
+            android:text="@string/settings_title" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/settingsLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/screen_padding">
 
         <LinearLayout
+            android:id="@+id/darkTheme"
+            style="@style/list_element_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/title_marginbottom"
             android:orientation="horizontal">
-
-            <ImageButton
-                android:id="@+id/returnButton"
-                android:layout_width="@dimen/return_button_size"
-                android:layout_height="@dimen/return_button_size"
-                android:backgroundTint="@color/clear"
-                android:foreground="?attr/selectableItemBackground"
-                android:src="@drawable/arrow_back_icon"
-                android:layout_marginRight="@dimen/return_button_marginright"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:fontFamily="@font/google_sans_medium"
-                android:gravity="center_vertical"
-                android:text="@string/settings_title"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/title_text_size"/>
+                android:text="@string/darkTheme" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/darkThemeSwitch"
+                style="@style/switch_style"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/settings_imagebutton_size" />
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/settingsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="@dimen/screen_padding">
+            android:id="@+id/shareApp"
+            style="@style/list_element_style">
 
-            <Switch
-                android:id="@+id/darkTheme"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/google_sans_regular"
-                android:text="Темная тема"
-                android:textColor="@color/text_color"
-                android:textSize="@dimen/regular_text_size"
-                android:thumb="@drawable/knob"
-                android:trackTint="@color/switch_track_color"
-                android:layout_marginVertical="@dimen/list_elements_marginvertical"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/shareApp" />
 
-            <LinearLayout
-                android:id="@+id/shareApp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/list_elements_marginvertical">
+            <ImageButton
+                android:id="@+id/shareAppButton"
+                style="@style/setting_imagebutton_style"
+                android:src="@drawable/share_icon" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/google_sans_regular"
-                    android:gravity="center_vertical"
-                    android:text="Поделиться приложением"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/regular_text_size" />
+        <LinearLayout
+            android:id="@+id/writeToSupport"
+            style="@style/list_element_style"
+            android:layout_marginVertical="@dimen/list_elements_marginvertical">
 
-                <ImageButton
-                    android:id="@+id/imageButton2"
-                    android:layout_width="@dimen/settings_imagebutton_size"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:backgroundTint="@color/clear"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:src="@drawable/share_icon" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/writeToSupport" />
 
-            <LinearLayout
-                android:id="@+id/writeToSupport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/list_elements_marginvertical">
+            <ImageButton
+                android:id="@+id/writeToSupportButton"
+                style="@style/setting_imagebutton_style"
+                android:src="@drawable/support_icon" />
+        </LinearLayout>
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/google_sans_regular"
-                    android:gravity="center_vertical"
-                    android:text="Написать в поддержку"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/regular_text_size" />
+        <LinearLayout
+            android:id="@+id/termsOfUse"
+            style="@style/list_element_style">
 
-                <ImageButton
-                    android:layout_width="@dimen/settings_imagebutton_size"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:backgroundTint="@color/clear"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:src="@drawable/support_icon"
-                    tools:ignore="SpeakableTextPresentCheck" />
-            </LinearLayout>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/termsOfUse" />
 
-            <LinearLayout
-                android:id="@+id/termsOfUse"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginVertical="@dimen/list_elements_marginvertical">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/google_sans_regular"
-                    android:gravity="center_vertical"
-                    android:text="Пользовательское соглашение"
-                    android:textColor="@color/text_color"
-                    android:textSize="@dimen/regular_text_size" />
-
-                <ImageButton
-                    android:layout_width="@dimen/settings_imagebutton_size"
-                    android:layout_height="@dimen/settings_imagebutton_size"
-                    android:backgroundTint="@color/clear"
-                    android:foreground="?attr/selectableItemBackground"
-                    android:src="@drawable/arrow_forward_icon" />
-            </LinearLayout>
+            <ImageButton
+                android:id="@+id/termsOfUseButton"
+                style="@style/setting_imagebutton_style"
+                android:src="@drawable/arrow_forward_icon" />
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

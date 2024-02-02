@@ -25,8 +25,8 @@
         <item name="trackTint">@color/switch_track_color</item>
     </style>
 
-    <style name="list_element_style" parent="Base.Theme.PlaylistMaker">
-        <item name="android:layout_marginVertical">@dimen/list_elements_marginvertical</item>
+    <style name="settings_list_element_style" parent="Base.Theme.PlaylistMaker">
+        <item name="android:layout_marginVertical">@dimen/settings_list_element_marginvertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:orientation">horizontal</item>
@@ -45,7 +45,7 @@
     <style name="setting_imagebutton_style" parent="Base.Theme.PlaylistMaker">
         <item name="android:layout_width">@dimen/settings_imagebutton_size</item>
         <item name="android:layout_height">@dimen/settings_imagebutton_size</item>
-        <item name="android:tint">@color/imagebutton_tint</item>
+        <item name="android:tint">@color/secondary_text_color</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:backgroundTint">@color/clear</item>
     </style>
@@ -69,6 +69,15 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="android:textSize">@dimen/title_text_size</item>
+    </style>
+
+    <style name="open_song_imagebutton_style" parent="Base.Theme.PlaylistMaker">
+        <item name="android:layout_width">@dimen/song_cover_size</item>
+        <item name="android:layout_height">@dimen/song_cover_size</item>
+        <item name="android:background">@color/clear</item>
+        <item name="android:foreground">?attr/selectableItemBackground</item>
+        <item name="android:src">@drawable/arrow_forward_icon</item>
+        <item name="tint">@color/secondary_text_color</item>
     </style>
 
 </resources>

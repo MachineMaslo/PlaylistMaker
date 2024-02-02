@@ -5,8 +5,7 @@
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
-
-        <item name="android:tint">@color/imagebutton_tint</item>
+        
         <item name="android:statusBarColor">@color/main_screen_bg_color</item>
 
         <item name="editTextStyle">@style/edittext_style</item>

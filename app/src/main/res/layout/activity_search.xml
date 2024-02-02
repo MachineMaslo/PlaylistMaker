@@ -43,6 +43,13 @@
             android:layout_marginRight="6dp"
             android:src="@drawable/cancel"
             app:tint="@color/edittext_hint_color" />
+
     </FrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/trackList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="LinearLayoutManager" />
 
 </LinearLayout>

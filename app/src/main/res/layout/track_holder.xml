@@ -11,7 +11,7 @@
         android:layout_width="@dimen/song_cover_size"
         android:layout_height="@dimen/song_cover_size"
         android:layout_marginHorizontal="@dimen/song_marginvertical"
-        app:srcCompat="@android:mipmap/sym_def_app_icon" />
+        app:srcCompat="@drawable/placeholder" />
 
     <LinearLayout
         android:layout_width="0dp"

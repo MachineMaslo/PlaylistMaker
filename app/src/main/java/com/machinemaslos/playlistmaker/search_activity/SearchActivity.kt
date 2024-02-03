@@ -1,24 +1,17 @@
-package com.machinemaslos.playlistmaker
+package com.machinemaslos.playlistmaker.search_activity
 
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.TypedValue
-import android.view.LayoutInflater
-import android.view.RoundedCorner
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.LinearLayout
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import org.w3c.dom.Text
+import com.machinemaslos.playlistmaker.R
+
 
 class SearchActivity : AppCompatActivity() {
 
@@ -28,16 +21,15 @@ class SearchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
-
-        searchEditText = findViewById(R.id.searchEditText)
-
         setListeners()
     }
 
     private fun setListeners() {
+        searchEditText = findViewById(R.id.searchEditText)
         val cancelSearchButton = findViewById<ImageButton>(R.id.cancelSearch)
+        val songsList = findViewById<RecyclerView>(R.id.songsList)
 
-        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { onBackPressed() }
+        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { finish() }
 
         searchEditText.addTextChangedListener( object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -57,62 +49,12 @@ class SearchActivity : AppCompatActivity() {
         cancelSearchButton.visibility = cancelSearchButtonVisibility(searchEditText.text)
         cancelSearchButton.setOnClickListener {
             searchEditText.text.clear()
-            searchEditText.onEditorAction(EditorInfo.IME_ACTION_DONE)
+            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
         }
 
-        val tracksList = findViewById<RecyclerView>(R.id.trackList)
-        tracksList.adapter = TracksAdapter(TRACKS)
+        songsList.adapter = TracksAdapter(TRACKS)
     }
-
-    //TracksRecyclerView
-    class Track(val name: String, val artist: String, val time: String, val artworkUrl: String)
-
-    class TrackHolder(private val parentView: View) : RecyclerView.ViewHolder(parentView) {
-        private val songTitle: TextView
-        private val songSubtitle: TextView
-        private val songCover: ImageView
-
-        init {
-            songTitle = parentView.findViewById(R.id.songTitle)
-            songSubtitle = parentView.findViewById(R.id.songSubtitle)
-            songCover = parentView.findViewById(R.id.songCover)
-        }
-
-        fun bind(track: Track) {
-            songTitle.text = track.name
-            songSubtitle.text = ("${track.artist} • ${track.time}")
-            Glide.with(parentView.context.applicationContext)
-                .load(track.artworkUrl)
-                .transform(RoundedCorners(dpToPx(4f, parentView.context)))
-                .placeholder(R.drawable.placeholder)
-                .into(songCover)
-        }
-
-        fun dpToPx(dp: Float, context: Context): Int {
-            return TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP,
-                dp,
-                context.resources.displayMetrics).toInt()
-        }
-    }
-
-    class TracksAdapter(private val news: List<Track>) : RecyclerView.Adapter<TrackHolder>() {
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrackHolder {
-            val view = LayoutInflater.from(parent.context).inflate(R.layout.track_holder, parent, false)
-            return TrackHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: TrackHolder, position: Int) {
-            holder.bind(news[position])
-        }
-
-        override fun getItemCount(): Int {
-            return news.size
-        }
-
-    }
-
 
     //InstanceState
     override fun onSaveInstanceState(outState: Bundle) {
@@ -147,7 +89,6 @@ class SearchActivity : AppCompatActivity() {
             Track("Sweet Child O'Mine", "Guns N' Roses", "5:03", "https://is5-ssl.mzstatic.com/image/thumb/Music125/v4/a0/4d/c4/a04dc484-03cc-02aa-fa82-5334fcb4bc16/18UMGIM24878.rgb.jpg/100x100bb.jpg"),
             Track("Can't Touch This", "MC Hammer", "4:17", "https://upload.wikimedia.org/wikipedia/en/d/d3/Please_Hammer_Don%27t_Hurt_%27Em.jpg"),
             Track("It's Tricky", "Run-DMC", "3:04", "https://upload.wikimedia.org/wikipedia/en/9/93/Raising_Hell_%28Run_DMC_album_-_cover_art%29.jpg")
-
         )
     }
 }

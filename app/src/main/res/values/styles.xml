@@ -60,7 +60,8 @@
         <item name="android:drawablePadding">@dimen/edittext_drawable_padding</item>
         <item name="android:paddingHorizontal">@dimen/edittext_padding_horizontal</item>
         <item name="android:drawableTint">@color/edittext_hint_color</item>
-        <item name="android:maxLines">1</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:textCursorDrawable">@drawable/edittext_cursor</item>
     </style>
 
     <style name="title_style" parent="Base.Theme.PlaylistMaker">

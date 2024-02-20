@@ -1,18 +1,18 @@
 <resources>
     <dimen name="title_text_size">20sp</dimen>
+    <dimen name="small_text_size">13sp</dimen>
     <dimen name="regular_text_size">16sp</dimen>
 
     <dimen name="title_marginbottom">8dp</dimen>
-    <dimen name="elements_padding">20dp</dimen>
-    <dimen name="elements_margin">20dp</dimen>
     <dimen name="screen_padding">16dp</dimen>
     <dimen name="return_button_marginright">4dp</dimen>
 
     <dimen name="activity_main_buttons_marginvertical">4dp</dimen>
-    <dimen name="list_elements_marginvertical">16dp</dimen>
+
+    <dimen name="settings_list_element_marginvertical">16dp</dimen>
+    <dimen name="settings_imagebutton_size">24dp</dimen>
 
     <dimen name="icon_size">22dp</dimen>
-    <dimen name="settings_imagebutton_size">24dp</dimen>
     <dimen name="return_button_size">48dp</dimen>
 
     <dimen name="corner_radius">20dp</dimen>
@@ -20,4 +20,7 @@
     <dimen name="edittext_height">36dp</dimen>
     <dimen name="edittext_padding_horizontal">6dp</dimen>
     <dimen name="edittext_drawable_padding">4dp</dimen>
+
+    <dimen name="song_marginvertical">8dp</dimen>
+    <dimen name="song_cover_size">48dp</dimen>
 </resources>

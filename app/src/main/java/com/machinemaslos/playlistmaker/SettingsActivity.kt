@@ -17,7 +17,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { onBackPressed() }
+        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { finish() }
 
         findViewById<ImageButton>(R.id.shareAppButton).setOnClickListener {
             startActivity(Intent.createChooser(Intent().apply {

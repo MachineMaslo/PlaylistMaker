@@ -67,7 +67,6 @@
     <style name="title_style" parent="Base.Theme.PlaylistMaker">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_gravity">center_vertical</item>
         <item name="android:fontFamily">@font/google_sans_medium</item>
         <item name="android:textSize">@dimen/title_text_size</item>
     </style>

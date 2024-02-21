@@ -25,6 +25,7 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="bottom"
+            android:singleLine="true"
             android:text="TextView" />
 
         <TextView
@@ -32,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:singleLine="true"
             android:text="TextView"
             android:textColor="@color/secondary_text_color"
             android:textSize="@dimen/small_text_size" />

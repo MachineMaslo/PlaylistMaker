@@ -21,6 +21,7 @@
 
         <TextView
             style="@style/title_style"
+            android:layout_gravity="center_vertical"
             android:text="@string/settings_title" />
     </LinearLayout>
 

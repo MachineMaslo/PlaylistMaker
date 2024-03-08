@@ -14,7 +14,7 @@
         android:orientation="horizontal">
 
         <ImageButton
-            android:id="@+id/returnButton"
+            android:id="@+id/bReturn"
             style="@style/returnbutton_style" />
 
         <TextView
@@ -30,7 +30,7 @@
         android:padding="@dimen/screen_padding">
 
         <EditText
-            android:id="@+id/searchEditText"
+            android:id="@+id/etSearch"
             style="@style/edittext_style"
             android:layout_width="match_parent"
             android:drawableStart="@drawable/search_icon"
@@ -39,7 +39,7 @@
             android:singleLine="true"/>
 
         <ImageButton
-            android:id="@+id/cancelSearch"
+            android:id="@+id/bCancelSearch"
             style="@style/setting_imagebutton_style"
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="6dp"
@@ -52,11 +52,51 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/songsList"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="LinearLayoutManager" />
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvYouSearched"
+                        style="@style/title_style"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/settings_list_element_marginvertical"
+                        android:gravity="center"
+                        android:text="Вы искали" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvTracks"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layoutManager="LinearLayoutManager">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <Button
+                        android:id="@+id/bClearHistory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="@dimen/settings_list_element_marginvertical"
+                        android:backgroundTint="@color/text_color"
+                        android:text="Очистить историю"
+                        android:textColor="@color/background_color" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/errorHolder"
@@ -65,7 +105,8 @@
             android:gravity="center_horizontal"
             android:orientation="vertical"
             android:paddingHorizontal="40dp"
-            android:paddingTop="108dp">
+            android:paddingTop="108dp"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/errorPicture"
@@ -97,7 +138,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/text_color"
                 android:text="Обновить"
-                android:textColor="@color/main_screen_text_color" />
+                android:textColor="@color/background_color" />
         </LinearLayout>
 
     </FrameLayout>

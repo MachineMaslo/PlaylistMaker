@@ -9,8 +9,10 @@
         <item name="android:statusBarColor">@color/main_screen_bg_color</item>
 
         <item name="editTextStyle">@style/edittext_style</item>
+        <item name="buttonStyle">@style/button_style</item>
 
         <item name="android:colorBackground">@color/background_color</item>
+
     </style>
 
 </resources>

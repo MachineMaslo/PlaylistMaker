@@ -87,12 +87,9 @@
 
                     <Button
                         android:id="@+id/bClearHistory"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        style="@style/button_style"
                         android:layout_marginVertical="@dimen/settings_list_element_marginvertical"
-                        android:backgroundTint="@color/text_color"
-                        android:text="Очистить историю"
-                        android:textColor="@color/background_color" />
+                        android:text="Очистить историю" />
                 </LinearLayout>
             </ScrollView>
 
@@ -134,11 +131,8 @@
 
             <Button
                 android:id="@+id/updateButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/text_color"
-                android:text="Обновить"
-                android:textColor="@color/background_color" />
+                style="@style/button_style"
+                android:text="Обновить" />
         </LinearLayout>
 
     </FrameLayout>

@@ -1,6 +1,7 @@
 package com.machinemaslos.playlistmaker.search_activity
 
 import android.content.Context
+import android.icu.text.SimpleDateFormat
 import android.util.TypedValue
 import android.view.View
 import android.widget.ImageView
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.machinemaslos.playlistmaker.R
+import java.util.Locale
 
 class TrackHolder(private val parentView: View) : RecyclerView.ViewHolder(parentView) {
     private val songTitle: TextView
@@ -23,7 +25,7 @@ class TrackHolder(private val parentView: View) : RecyclerView.ViewHolder(parent
 
     fun bind(track: Track) {
         songTitle.text = track.name
-        songSubtitle.text = ("${track.artist} • ${track.time}")
+        songSubtitle.text = "${track.artist} • ${SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.time.toLong()) }"
         Glide.with(parentView.context.applicationContext)
             .load(track.artworkUrl)
             .transform(RoundedCorners(dpToPx(4f, parentView.context)))
@@ -31,7 +33,7 @@ class TrackHolder(private val parentView: View) : RecyclerView.ViewHolder(parent
             .into(songCover)
     }
 
-    fun dpToPx(dp: Float, context: Context): Int {
+    private fun dpToPx(dp: Float, context: Context): Int {
         return TypedValue.applyDimension(
             TypedValue.COMPLEX_UNIT_DIP,
             dp,

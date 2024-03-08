@@ -19,6 +19,7 @@
 
         <TextView
             style="@style/title_style"
+            android:layout_gravity="center_vertical"
             android:text="@string/search_title" />
 
     </LinearLayout>
@@ -32,24 +33,73 @@
             android:id="@+id/searchEditText"
             style="@style/edittext_style"
             android:layout_width="match_parent"
-            android:drawableLeft="@drawable/search_icon"
+            android:drawableStart="@drawable/search_icon"
             android:hint="@string/search_title"
-            android:inputType="text" />
+            android:imeOptions="actionDone"
+            android:singleLine="true"/>
 
         <ImageButton
             android:id="@+id/cancelSearch"
             style="@style/setting_imagebutton_style"
-            android:layout_gravity="right|center_vertical"
-            android:layout_marginRight="6dp"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="6dp"
             android:src="@drawable/cancel"
             app:tint="@color/edittext_hint_color" />
 
     </FrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/songsList"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layoutManager="LinearLayoutManager" />
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/songsList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layoutManager="LinearLayoutManager" />
+
+        <LinearLayout
+            android:id="@+id/errorHolder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="40dp"
+            android:paddingTop="108dp">
+
+            <ImageView
+                android:id="@+id/errorPicture"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/connection_problems" />
+
+            <TextView
+                android:id="@+id/errorTitle"
+                style="@style/title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/settings_list_element_marginvertical"
+                android:gravity="center"
+                android:text="Проблемы со связью" />
+
+            <TextView
+                android:id="@+id/errorSubtitle"
+                style="@style/title_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/settings_list_element_marginvertical"
+                android:gravity="center"
+                android:text="Загрузка не удалась. Проверьте подключение к интернету." />
+
+            <Button
+                android:id="@+id/updateButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/text_color"
+                android:text="Обновить"
+                android:textColor="@color/main_screen_text_color" />
+        </LinearLayout>
+
+    </FrameLayout>
 
 </LinearLayout>

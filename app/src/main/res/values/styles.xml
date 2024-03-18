@@ -71,13 +71,21 @@
         <item name="android:textSize">@dimen/title_text_size</item>
     </style>
 
-    <style name="open_song_imagebutton_style" parent="Base.Theme.PlaylistMaker">
+    <style name="open_song_arrow_style" parent="Base.Theme.PlaylistMaker">
         <item name="android:layout_width">@dimen/song_cover_size</item>
         <item name="android:layout_height">@dimen/song_cover_size</item>
         <item name="android:background">@color/clear</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
         <item name="android:src">@drawable/arrow_forward_icon</item>
         <item name="tint">@color/secondary_text_color</item>
+        <item name="android:scaleType">center</item>
+    </style>
+
+    <style name="button_style" parent="Base.Theme.PlaylistMaker">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:backgroundTint">@color/text_color</item>
+        <item name="android:textColor">@color/background_color</item>
     </style>
 
 </resources>

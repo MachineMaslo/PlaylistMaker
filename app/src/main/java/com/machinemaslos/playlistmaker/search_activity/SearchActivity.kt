@@ -1,5 +1,6 @@
 package com.machinemaslos.playlistmaker.search_activity
 
+import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.text.Editable
@@ -14,8 +15,12 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.machinemaslos.playlistmaker.R
+import com.machinemaslos.playlistmaker.SEARCH_HISTORY
+import com.machinemaslos.playlistmaker.SEARCH_HISTORY_DEFAULT
+import com.machinemaslos.playlistmaker.SHARED_PREFS
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -31,11 +36,12 @@ class SearchActivity : AppCompatActivity() {
     private var searchText = ""
 
     private val iTunesBaseUrl = "https://itunes.apple.com"
-
     private val retrofit = Retrofit.Builder()
         .baseUrl(iTunesBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
+    private lateinit var sharedPrefs: SharedPreferences
+    private lateinit var historySaver: HistorySaver
 
     private val searchService = retrofit.create(SearchApi::class.java)
 
@@ -49,13 +55,19 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var errorSubtitle: TextView
     private lateinit var errorPicture: ImageView
     private lateinit var updateButton: Button
+
+    private lateinit var youSearchedTitle: TextView
+    private lateinit var clearHistoryButton: Button
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        searchEditText = findViewById(R.id.searchEditText)
-        tracksRecyclerView = findViewById(R.id.songsList)
+        sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE)
+        historySaver = HistorySaver(this@SearchActivity)
+
+        searchEditText = findViewById(R.id.etSearch)
+        tracksRecyclerView = findViewById(R.id.rvTracks)
 
         connectionProblemsDrawable = getDrawable(R.drawable.connection_problems)!!
         nothingFoundDrawable = getDrawable(R.drawable.nothing_found)!!
@@ -66,14 +78,16 @@ class SearchActivity : AppCompatActivity() {
         errorPicture = findViewById(R.id.errorPicture)
         updateButton = findViewById(R.id.updateButton)
 
+        youSearchedTitle = findViewById(R.id.tvYouSearched)
+        clearHistoryButton = findViewById(R.id.bClearHistory)
+
         setListeners()
     }
 
     private fun setListeners() {
-        val cancelSearchButton = findViewById<ImageButton>(R.id.cancelSearch)
-        val tracksRecyclerView = findViewById<RecyclerView>(R.id.songsList)
+        val cancelSearchButton = findViewById<ImageButton>(R.id.bCancelSearch)
 
-        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { finish() }
+        findViewById<ImageButton>(R.id.bReturn).setOnClickListener { finish() }
 
         searchEditText.addTextChangedListener( object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -81,7 +95,9 @@ class SearchActivity : AppCompatActivity() {
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                cancelSearchButton.visibility = cancelSearchButtonVisibility(s)
+                cancelSearchButton.isVisible = cancelSearchButtonVisibility(s)
+                if (s.isNullOrEmpty()) showTracksOrHistory(2)
+                else showTracksOrHistory(1)
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -91,26 +107,43 @@ class SearchActivity : AppCompatActivity() {
         })
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
+                hideKeyboard()
+                searchEditText.clearFocus()
+
                 search()
             }
             true
         }
-
-        cancelSearchButton.visibility = cancelSearchButtonVisibility(searchEditText.text)
-        cancelSearchButton.setOnClickListener {
-            searchEditText.text.clear()
-            val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
-            tracks.clear()
-            tracksRecyclerView.adapter?.notifyDataSetChanged()
+        searchEditText.setOnFocusChangeListener{ _, hasFocus ->
+            if (hasFocus and searchEditText.text.isEmpty()) {
+                showTracksOrHistory(2)
+            }
+            else {
+                showTracksOrHistory(1)
+            }
         }
 
-        errorHolder.visibility = View.GONE
+        cancelSearchButton.isVisible = cancelSearchButtonVisibility(searchEditText.text)
+        errorHolder.isVisible = false
+        showTracksOrHistory(1)
 
-        tracksRecyclerView.adapter = TracksAdapter(tracks)
+        cancelSearchButton.setOnClickListener {
+            hideKeyboard()
+
+            searchEditText.clearFocus()
+            searchEditText.text.clear()
+            tracks.clear()
+            showTracksOrHistory(1)
+        }
 
         updateButton.setOnClickListener {
             search()
+        }
+
+        clearHistoryButton.setOnClickListener {
+            sharedPrefs.edit().putString( SEARCH_HISTORY, SEARCH_HISTORY_DEFAULT).apply()
+            searchEditText.clearFocus()
+            showTracksOrHistory(1)
         }
     }
 
@@ -127,50 +160,79 @@ class SearchActivity : AppCompatActivity() {
 
 
     //SearchEditText
-    private fun cancelSearchButtonVisibility(s: CharSequence?): Int {
-        return if (s.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
+    private fun cancelSearchButtonVisibility(s: CharSequence?): Boolean {
+        return if (s.isNullOrEmpty()) false else true
     }
 
     private fun search() {
-        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
-        errorHolder.visibility = View.GONE
-        tracks.clear()
-        searchService.search(searchEditText.text.toString()).enqueue(object: Callback<TrackResponse> {
-            override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                if (response.code() == 200) {
+        if (searchEditText.text.isNotEmpty()) {
+            showTracksOrHistory(1)
+            searchEditText.clearFocus()
+            tracks.clear()
 
-                    if (response.body()?.results?.isNotEmpty() == true) {
-                        tracks.addAll(response.body()?.results!!)
+            searchService.search(searchEditText.text.toString()).enqueue(object: Callback<TrackResponse> {
+                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
+                    if (response.code() == 200) {
+
+                        if (response.body()?.results?.isNotEmpty() == true) {
+                            tracks.addAll(response.body()?.results!!)
+                        }
+                        else {
+                            showError("Ничего не нашлось", "", nothingFoundDrawable, false)
+                        }
                     }
                     else {
-                        showError("Ничего не нашлось", "", nothingFoundDrawable, false)
+                        showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
                     }
+                    tracksRecyclerView.adapter?.notifyDataSetChanged()
                 }
-                else {
-                    showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
-                }
-                tracksRecyclerView.adapter?.notifyDataSetChanged()
-            }
 
-            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
-                tracksRecyclerView.adapter?.notifyDataSetChanged()
-            }
-        })
+                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                    showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
+                    tracksRecyclerView.adapter?.notifyDataSetChanged()
+                }
+            })
+        }
     }
 
     private fun showError(title: String, subtitle: String, picture: Drawable, showUpdateButton: Boolean) {
-        errorHolder.visibility = View.VISIBLE
+        searchEditText.clearFocus()
+        errorHolder.isVisible = true
         errorTitle.text = title
         errorSubtitle.text = subtitle
         errorPicture.setImageDrawable(picture)
         if (showUpdateButton) updateButton.visibility = View.VISIBLE else updateButton.visibility = View.GONE
     }
+
+    private fun showTracksOrHistory(show: Int) {
+        errorHolder.visibility = View.GONE
+
+        if (show == 1) {
+            youSearchedTitle.visibility = View.GONE
+            clearHistoryButton.visibility = View.GONE
+
+            tracksRecyclerView.adapter = TracksAdapter(tracks)
+        }
+        else if (show == 2) {
+            val history = historySaver.getHistory()
+
+            if (history.isNotEmpty()) {
+                youSearchedTitle.visibility = View.VISIBLE
+                clearHistoryButton.visibility = View.VISIBLE
+
+                tracksRecyclerView.adapter = TracksAdapter(history)
+            }
+            else {
+                showTracksOrHistory(1)
+            }
+        }
+    }
+
+    private fun hideKeyboard() {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+    }
+
 
     companion object {
         private const val SEARCH_TEXT = "SEARCH_TEXT"

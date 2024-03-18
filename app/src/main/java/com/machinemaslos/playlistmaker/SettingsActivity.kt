@@ -5,7 +5,6 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SwitchCompat
 
 class SettingsActivity : AppCompatActivity() {
@@ -17,7 +16,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun setListeners() {
-        findViewById<ImageButton>(R.id.returnButton).setOnClickListener { finish() }
+        findViewById<ImageButton>(R.id.bReturn).setOnClickListener { finish() }
 
         findViewById<ImageButton>(R.id.shareAppButton).setOnClickListener {
             startActivity(Intent.createChooser(Intent().apply {
@@ -43,9 +42,10 @@ class SettingsActivity : AppCompatActivity() {
             })
         }
 
-        findViewById<SwitchCompat>(R.id.darkThemeSwitch).setOnClickListener {
-            if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-            else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        val darkThemeSwitch = findViewById<SwitchCompat>(R.id.darkThemeSwitch)
+        darkThemeSwitch.setOnCheckedChangeListener { _, checked ->
+            (applicationContext as App).switchTheme(if (!checked) 1 else 2)
         }
+        darkThemeSwitch.isChecked = (applicationContext as App).mode != 1
     }
 }

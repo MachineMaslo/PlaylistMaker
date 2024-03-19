@@ -9,4 +9,7 @@ interface SearchApi {
     @GET("/search?entity=song")
     fun search(@Query("term") text: String): Call<TrackResponse>
 
+    @GET("/lookup?entity=song")
+    fun lookUpSearch(@Query("id") id: String): Call<TrackLookUpResponse>
+
 }

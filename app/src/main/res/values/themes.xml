@@ -6,7 +6,8 @@
         <item name="android:textSize">@dimen/regular_text_size</item>
         <item name="android:fontFamily">@font/google_sans_regular</item>
         
-        <item name="android:statusBarColor">@color/main_screen_bg_color</item>
+        <item name="android:statusBarColor">@color/background_color</item>
+        <item name="android:navigationBarColor">@color/background_color</item>
 
         <item name="editTextStyle">@style/edittext_style</item>
         <item name="buttonStyle">@style/button_style</item>

@@ -1,5 +1,6 @@
 package com.machinemaslos.playlistmaker.search_activity
 
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -17,6 +18,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.machinemaslos.playlistmaker.PlayerActivity
 import com.machinemaslos.playlistmaker.R
 import com.machinemaslos.playlistmaker.SEARCH_HISTORY
 import com.machinemaslos.playlistmaker.SEARCH_HISTORY_DEFAULT
@@ -161,7 +163,7 @@ class SearchActivity : AppCompatActivity() {
 
     //SearchEditText
     private fun cancelSearchButtonVisibility(s: CharSequence?): Boolean {
-        return if (s.isNullOrEmpty()) false else true
+        return !s.isNullOrEmpty()
     }
 
     private fun search() {
@@ -194,6 +196,21 @@ class SearchActivity : AppCompatActivity() {
             })
         }
     }
+
+    fun lookUpSearch(trackId: String) {
+        searchService.lookUpSearch(trackId).enqueue(object: Callback<TrackLookUpResponse> {
+            override fun onResponse(call: Call<TrackLookUpResponse>, response: Response<TrackLookUpResponse>) {
+                if (response.code() == 200) {
+                    val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).putExtra("track", response.body()?.results?.firstOrNull())
+                    startActivity(playerIntent)
+                }
+            }
+
+            override fun onFailure(call: Call<TrackLookUpResponse>, t: Throwable) {
+            }
+        })
+    }
+
 
     private fun showError(title: String, subtitle: String, picture: Drawable, showUpdateButton: Boolean) {
         searchEditText.clearFocus()

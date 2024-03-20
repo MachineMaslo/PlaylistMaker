@@ -68,13 +68,13 @@ class TrackHolder(private val parentView: View) : RecyclerView.ViewHolder(parent
             history.addFirst(track)
 
             historySaver.sharedPrefs.edit().putString( SEARCH_HISTORY, historySaver.gson.toJson(history)).apply()
+            (parentView.context as SearchActivity).lookUpSearch(track.id)
         }
     }
-
-    fun Int.dpToPx(context: Context): Int {
-        return TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_DIP,
-            this.toFloat(),
-            context.resources.displayMetrics).toInt()
-    }
+}
+fun Int.dpToPx(context: Context): Int {
+    return TypedValue.applyDimension(
+        TypedValue.COMPLEX_UNIT_DIP,
+        this.toFloat(),
+        context.resources.displayMetrics).toInt()
 }

@@ -20,5 +20,8 @@ class HistorySaver(context: Context) {
             object : TypeToken<LinkedList<Track>>() {}.type
         )
     }
+    fun setHistory(tracks: LinkedList<Track>) {
+        sharedPrefs.edit().putString(SEARCH_HISTORY, gson.toJson(tracks)).apply()
+    }
 
 }

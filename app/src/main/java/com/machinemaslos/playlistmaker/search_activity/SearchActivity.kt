@@ -4,6 +4,9 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.os.Process
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
@@ -14,10 +17,12 @@ import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
+import com.machinemaslos.playlistmaker.EX_TRACK
 import com.machinemaslos.playlistmaker.PlayerActivity
 import com.machinemaslos.playlistmaker.R
 import com.machinemaslos.playlistmaker.SEARCH_HISTORY
@@ -49,18 +54,29 @@ class SearchActivity : AppCompatActivity() {
 
     private val tracks = mutableListOf<Track>()
 
-    private lateinit var connectionProblemsDrawable: Drawable
-    private lateinit var nothingFoundDrawable: Drawable
+    private val connectionProblemsDrawable: Drawable by lazy { getDrawable(R.drawable.connection_problems)!! }
+    private val nothingFoundDrawable: Drawable by lazy { getDrawable(R.drawable.nothing_found)!! }
 
-    private lateinit var errorHolder: LinearLayout
-    private lateinit var errorTitle: TextView
-    private lateinit var errorSubtitle: TextView
-    private lateinit var errorPicture: ImageView
-    private lateinit var updateButton: Button
+    private val errorHolder: LinearLayout by lazy { findViewById(R.id.errorHolder) }
+    private val errorTitle: TextView by lazy { findViewById(R.id.errorTitle) }
+    private val errorSubtitle: TextView by lazy { findViewById(R.id.errorSubtitle) }
+    private val errorPicture: ImageView by lazy { findViewById(R.id.errorPicture) }
+    private val updateButton: Button by lazy { findViewById(R.id.updateButton) }
 
     private lateinit var youSearchedTitle: TextView
     private lateinit var clearHistoryButton: Button
-    
+
+    private val pbLoading by lazy { findViewById<ProgressBar>(R.id.pbLoading) }
+
+    private val handler = Handler(Looper.getMainLooper())
+    private val searchRunnable = Runnable {
+        searchText.let {
+            if (it.isNotEmpty()) {
+                search()
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
@@ -70,15 +86,6 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText = findViewById(R.id.etSearch)
         tracksRecyclerView = findViewById(R.id.rvTracks)
-
-        connectionProblemsDrawable = getDrawable(R.drawable.connection_problems)!!
-        nothingFoundDrawable = getDrawable(R.drawable.nothing_found)!!
-
-        errorHolder = findViewById(R.id.errorHolder)
-        errorTitle = findViewById(R.id.errorTitle)
-        errorSubtitle = findViewById(R.id.errorSubtitle)
-        errorPicture = findViewById(R.id.errorPicture)
-        updateButton = findViewById(R.id.updateButton)
 
         youSearchedTitle = findViewById(R.id.tvYouSearched)
         clearHistoryButton = findViewById(R.id.bClearHistory)
@@ -93,13 +100,18 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.addTextChangedListener( object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                // empty
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                cancelSearchButton.isVisible = cancelSearchButtonVisibility(s)
-                if (s.isNullOrEmpty()) showTracksOrHistory(2)
-                else showTracksOrHistory(1)
+                handler.removeCallbacks(searchRunnable)
+                cancelSearchButton.isVisible = !s.isNullOrEmpty()
+                if (s.isNullOrEmpty()) {
+                    showTracksOrHistory(2)
+                } else {
+                    showTracksOrHistory(1)
+                    handler.removeCallbacks(searchRunnable)
+                    handler.postDelayed(searchRunnable, 2000)
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {
@@ -125,8 +137,6 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        cancelSearchButton.isVisible = cancelSearchButtonVisibility(searchEditText.text)
-        errorHolder.isVisible = false
         showTracksOrHistory(1)
 
         cancelSearchButton.setOnClickListener {
@@ -137,11 +147,9 @@ class SearchActivity : AppCompatActivity() {
             tracks.clear()
             showTracksOrHistory(1)
         }
-
         updateButton.setOnClickListener {
             search()
         }
-
         clearHistoryButton.setOnClickListener {
             sharedPrefs.edit().putString( SEARCH_HISTORY, SEARCH_HISTORY_DEFAULT).apply()
             searchEditText.clearFocus()
@@ -162,36 +170,33 @@ class SearchActivity : AppCompatActivity() {
 
 
     //SearchEditText
-    private fun cancelSearchButtonVisibility(s: CharSequence?): Boolean {
-        return !s.isNullOrEmpty()
-    }
 
     private fun search() {
         if (searchEditText.text.isNotEmpty()) {
+            pbLoading.visibility = View.VISIBLE  // Show the progress bar when the search starts
             showTracksOrHistory(1)
             searchEditText.clearFocus()
             tracks.clear()
 
-            searchService.search(searchEditText.text.toString()).enqueue(object: Callback<TrackResponse> {
+            searchService.search(searchEditText.text.toString()).enqueue(object : Callback<TrackResponse> {
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
                     if (response.code() == 200) {
-
                         if (response.body()?.results?.isNotEmpty() == true) {
                             tracks.addAll(response.body()?.results!!)
-                        }
-                        else {
+                        } else {
                             showError("Ничего не нашлось", "", nothingFoundDrawable, false)
                         }
-                    }
-                    else {
+                    } else {
                         showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
                     }
                     tracksRecyclerView.adapter?.notifyDataSetChanged()
+                    pbLoading.visibility = View.GONE
                 }
 
                 override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
                     showError("Проблемы со связью", "Загрузка не удалась. Проверьте подключение к интернету", connectionProblemsDrawable, true)
                     tracksRecyclerView.adapter?.notifyDataSetChanged()
+                    pbLoading.visibility = View.GONE
                 }
             })
         }
@@ -201,7 +206,7 @@ class SearchActivity : AppCompatActivity() {
         searchService.lookUpSearch(trackId).enqueue(object: Callback<TrackLookUpResponse> {
             override fun onResponse(call: Call<TrackLookUpResponse>, response: Response<TrackLookUpResponse>) {
                 if (response.code() == 200) {
-                    val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).putExtra("track", response.body()?.results?.firstOrNull())
+                    val playerIntent = Intent(this@SearchActivity, PlayerActivity::class.java).putExtra(EX_TRACK, response.body()?.results?.firstOrNull())
                     startActivity(playerIntent)
                 }
             }
@@ -221,6 +226,10 @@ class SearchActivity : AppCompatActivity() {
         if (showUpdateButton) updateButton.visibility = View.VISIBLE else updateButton.visibility = View.GONE
     }
 
+    /**
+     * 1 - Tracks,
+     * 2 - History
+     */
     private fun showTracksOrHistory(show: Int) {
         errorHolder.visibility = View.GONE
 

@@ -1,6 +1,9 @@
 package com.machinemaslos.playlistmaker
 import android.icu.text.SimpleDateFormat
+import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -12,6 +15,15 @@ import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
 
+    private val mediaPlayer = MediaPlayer()
+    private var isPlaying = false
+
+    private val handler by lazy { Handler(this.mainLooper) }
+    private lateinit var updatePlaybackTimeRunnable: Runnable
+
+    private lateinit var bPlay: ImageButton
+    private lateinit var tvPlaybackTime: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_player)
@@ -19,8 +31,10 @@ class PlayerActivity: AppCompatActivity() {
         val topAppBar = findViewById<MaterialToolbar>(R.id.topAppBar)
         topAppBar.setNavigationOnClickListener { finish() }
 
-        val track = intent.getSerializableExtra("track") as ExtendedTrack
+        val track = intent.getSerializableExtra(EX_TRACK) as ExtendedTrack
 
+        mediaPlayer.setDataSource(track.songUrl)
+        mediaPlayer.prepareAsync()
         Glide.with(applicationContext)
             .load(track.artworkUrl.replaceAfterLast("/", "512x512bb.jpg"))
             .transform(RoundedCorners(24.dpToPx(this)))
@@ -33,5 +47,52 @@ class PlayerActivity: AppCompatActivity() {
         findViewById<TextView>(R.id.tvCountry).text = track.country
         findViewById<TextView>(R.id.tvGenre).text = track.genre
         findViewById<TextView>(R.id.tvDuration).text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(track.time.toLong())
+        tvPlaybackTime = findViewById(R.id.tvPlaybackTime)
+        bPlay = findViewById(R.id.bPlay)
+
+        bPlay.setOnClickListener { if (!isPlaying) onMediaPlayerStart() else onMediaPlayerPause() }
+        mediaPlayer.setOnCompletionListener { onMediaPlayerCompletion()  }
+
+        updatePlaybackTimeRunnable = Runnable {
+            if (mediaPlayer.isPlaying) {
+                tvPlaybackTime.text = SimpleDateFormat("mm:ss", Locale.getDefault()).format(mediaPlayer.currentPosition)
+                handler.postDelayed(updatePlaybackTimeRunnable, 400)
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+        }
+        mediaPlayer.release()
+        handler.removeCallbacks(updatePlaybackTimeRunnable)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        if (isPlaying) {
+            onMediaPlayerPause()
+        }
+    }
+
+
+    private fun onMediaPlayerStart() {
+        isPlaying = true
+        mediaPlayer.start()
+        bPlay.setImageDrawable(getDrawable(R.drawable.pause_track))
+        handler.post(updatePlaybackTimeRunnable)
+    }
+    private fun onMediaPlayerPause() {
+        isPlaying = false
+        mediaPlayer.pause()
+        bPlay.setImageDrawable(getDrawable(R.drawable.play_track))
+        handler.removeCallbacks(updatePlaybackTimeRunnable)
+    }
+    private fun onMediaPlayerCompletion() {
+        isPlaying = false
+        bPlay.setImageDrawable(getDrawable(R.drawable.play_track))
+        handler.removeCallbacks(updatePlaybackTimeRunnable)
     }
 }

@@ -5,11 +5,12 @@
     android:layout_height="match_parent"
     android:background="@color/main_screen_bg_color"
     android:orientation="vertical"
-    android:padding="@dimen/screen_padding">
+    android:paddingHorizontal="@dimen/screen_padding_horizontal"
+    android:paddingVertical="@dimen/screen_padding_vertical">
 
     <TextView
         style="@style/title_style"
-        android:layout_marginBottom="@dimen/title_marginbottom"
+        android:layout_marginVertical="@dimen/title_marginbottom"
         android:text="@string/app_name"
         android:textColor="@color/white" />
 

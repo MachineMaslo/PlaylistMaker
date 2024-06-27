@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".search_activity.SearchActivity">
+    tools:context=".search_activity.SearchActivity"
+    android:paddingTop="@dimen/screen_padding_vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -27,7 +28,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/screen_padding">
+        android:padding="@dimen/screen_padding_horizontal">
 
         <EditText
             android:id="@+id/etSearch"
@@ -44,6 +45,7 @@
             android:layout_gravity="end|center_vertical"
             android:layout_marginEnd="6dp"
             android:src="@drawable/cancel"
+            android:visibility="invisible"
             app:tint="@color/edittext_hint_color" />
 
     </FrameLayout>
@@ -51,6 +53,17 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/pbLoading"
+            style="@style/Widget.Material3.CircularProgressIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="224dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/primary_color"
+            android:visibility="gone" />
 
         <ScrollView
             android:layout_width="match_parent"
@@ -75,6 +88,7 @@
                     android:id="@+id/rvTracks"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:overScrollMode="never"
                     app:layoutManager="LinearLayoutManager">
 
                 </androidx.recyclerview.widget.RecyclerView>

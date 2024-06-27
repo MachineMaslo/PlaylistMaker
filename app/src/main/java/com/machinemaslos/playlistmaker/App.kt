@@ -34,3 +34,5 @@ class App : Application() {
         mode = switchMode
     }
 }
+
+const val EX_TRACK = "extended_track"

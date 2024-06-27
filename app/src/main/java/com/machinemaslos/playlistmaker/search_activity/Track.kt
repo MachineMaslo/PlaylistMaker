@@ -20,5 +20,6 @@ data class ExtendedTrack(
     @SerializedName("collectionName") val album: String,
     @SerializedName("releaseDate") val year: String,
     @SerializedName("primaryGenreName") val genre: String,
-    @SerializedName("country") val country: String
+    @SerializedName("country") val country: String,
+    @SerializedName("previewUrl") val songUrl: String
 ): Serializable

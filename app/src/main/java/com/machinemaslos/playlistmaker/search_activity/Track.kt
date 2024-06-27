@@ -1,4 +1,4 @@
-package com.machinemaslos.playlistmaker.data.web
+package com.machinemaslos.playlistmaker.search_activity
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
@@ -11,7 +11,7 @@ data class Track(
     @SerializedName("trackId") val id: String,
 )
 
-data class LookUpTrack(
+data class ExtendedTrack(
     @SerializedName("trackName") val name: String,
     @SerializedName("artistName") val artist: String,
     @SerializedName("trackTimeMillis") val time: String,

@@ -1,4 +1,4 @@
-package com.machinemaslos.playlistmaker.data.web
+package com.machinemaslos.playlistmaker.search_activity
 
 import retrofit2.Call
 import retrofit2.http.GET

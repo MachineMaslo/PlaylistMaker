@@ -1,10 +1,11 @@
-package com.machinemaslos.playlistmaker.presentation.ui
+package com.machinemaslos.playlistmaker
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.machinemaslos.playlistmaker.R
+import com.google.android.material.internal.EdgeToEdgeUtils
+import com.machinemaslos.playlistmaker.search_activity.SearchActivity
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

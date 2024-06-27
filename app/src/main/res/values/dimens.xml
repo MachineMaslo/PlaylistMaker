@@ -4,7 +4,7 @@
     <dimen name="regular_text_size">16sp</dimen>
 
     <dimen name="title_marginbottom">8dp</dimen>
-    <dimen name="screen_padding_horizontal">24dp</dimen>
+    <dimen name="screen_padding_horizontal">16dp</dimen>
     <dimen name="screen_padding_vertical">32dp</dimen>
     <dimen name="return_button_marginright">4dp</dimen>
 

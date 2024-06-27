@@ -1,4 +1,4 @@
-package com.machinemaslos.playlistmaker.presentation.ui
+package com.machinemaslos.playlistmaker
 
 import android.content.Intent
 import android.net.Uri
@@ -6,8 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ImageButton
 import androidx.appcompat.widget.SwitchCompat
-import com.machinemaslos.playlistmaker.App
-import com.machinemaslos.playlistmaker.R
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

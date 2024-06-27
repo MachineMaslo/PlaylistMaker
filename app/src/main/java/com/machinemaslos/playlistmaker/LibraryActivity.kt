@@ -1,8 +1,7 @@
-package com.machinemaslos.playlistmaker.presentation.ui
+package com.machinemaslos.playlistmaker
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.machinemaslos.playlistmaker.R
 
 class LibraryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

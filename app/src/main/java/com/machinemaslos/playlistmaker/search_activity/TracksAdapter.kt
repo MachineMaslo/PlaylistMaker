@@ -1,19 +1,19 @@
-package com.machinemaslos.playlistmaker.presentation.ui
+package com.machinemaslos.playlistmaker.search_activity
 
 import android.content.Context
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.reflect.TypeToken
 import com.machinemaslos.playlistmaker.R
-import com.machinemaslos.playlistmaker.data.web.Track
-import com.machinemaslos.playlistmaker.presentation.presenters.HistoryInteractor
-import com.machinemaslos.playlistmaker.presentation.presenters.SearchInteractor
+import com.machinemaslos.playlistmaker.SEARCH_HISTORY
+import com.machinemaslos.playlistmaker.SEARCH_HISTORY_DEFAULT
+import java.util.LinkedList
 
-class TracksAdapter(private val tracks: List<Track>,
-                    private val searchInteractor: SearchInteractor, private val historyInteractor: HistoryInteractor)
-                    : RecyclerView.Adapter<TrackHolder>() {
+class TracksAdapter(private val tracks: List<Track>) : RecyclerView.Adapter<TrackHolder>() {
     private lateinit var context: Context
 
     private var isClickAllowed = true
@@ -33,8 +33,23 @@ class TracksAdapter(private val tracks: List<Track>,
                 return@setOnClickListener
             }
 
-            historyInteractor.addTrack(track)
-            searchInteractor.lookUpSearch(track.id)
+            val historySaver = HistorySaver(context)
+            val history: LinkedList<Track> = historySaver.getHistory()
+            Log.d("History", "$history")
+            val iterator = history.iterator()
+            while (iterator.hasNext()) {
+                if (iterator.next().id == track.id) {
+                    iterator.remove()
+                }
+            }
+            if (history.size + 1 > 10) {
+                while (history.size + 1 > 10) {
+                    history.removeLast()
+                }
+            }
+            history.addFirst(track)
+            historySaver.setHistory(history)
+            (context as SearchActivity).lookUpSearch(track.id)
         }
     }
 

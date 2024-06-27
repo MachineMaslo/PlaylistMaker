@@ -19,7 +19,7 @@
             android:background="@color/background_color"
             android:minHeight="?attr/actionBarSize"
             app:menu="@menu/back_bar"
-            app:navigationIcon="?attr/homeAsUpIndicator"
+            app:navigationIcon="@drawable/arrow_back_icon"
             app:navigationIconTint="@color/text_color" />
 
     </com.google.android.material.appbar.AppBarLayout>

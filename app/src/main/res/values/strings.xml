@@ -13,6 +13,11 @@
     <string name="writeToSupport" translatable="true">Написать в поддержку</string>
     <string name="termsOfUse" translatable="true">Пользовательское соглашение</string>
 
+    <string name="internet_connection_error_title" translatable="true">Проблемы со связью</string>
+    <string name="internet_connection_error_subtitle" translatable="true">Загрузка не удалась. Проверьте подключение к интернету</string>
+
+    <string name="nothing_found_error_title" translatable="true">Ничего не нашлось</string>
+
     <string name="android_developer_course" translatable="true">https://practicum.yandex.ru/android-developer/</string>
     <string name="practicum_offer" translatable="true">"https://yandex.ru/legal/practicum_offer/"</string>
     <string name="mail" translatable="true">machinemaslo.new@gmail.com</string>

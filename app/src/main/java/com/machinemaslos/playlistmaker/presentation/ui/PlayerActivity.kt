@@ -1,4 +1,4 @@
-package com.machinemaslos.playlistmaker
+package com.machinemaslos.playlistmaker.presentation.ui
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,20 +9,24 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
-import com.machinemaslos.playlistmaker.search_activity.ExtendedTrack
-import com.machinemaslos.playlistmaker.search_activity.dpToPx
+import com.machinemaslos.playlistmaker.EX_TRACK
+import com.machinemaslos.playlistmaker.R
+import com.machinemaslos.playlistmaker.data.web.LookUpTrack
+import com.machinemaslos.playlistmaker.presentation.ui.TrackHolder.Companion.dpToPx
 import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
 
     private val mediaPlayer = MediaPlayer()
-    private var isPlaying = false
 
     private val handler by lazy { Handler(this.mainLooper) }
     private lateinit var updatePlaybackTimeRunnable: Runnable
 
     private lateinit var bPlay: ImageButton
     private lateinit var tvPlaybackTime: TextView
+
+    private val pauseTrackImg by lazy { getDrawable(R.drawable.pause_track) }
+    private val playTrackImg by lazy { getDrawable(R.drawable.play_track) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,7 +35,7 @@ class PlayerActivity: AppCompatActivity() {
         val topAppBar = findViewById<MaterialToolbar>(R.id.topAppBar)
         topAppBar.setNavigationOnClickListener { finish() }
 
-        val track = intent.getSerializableExtra(EX_TRACK) as ExtendedTrack
+        val track = intent.getSerializableExtra(EX_TRACK) as LookUpTrack
 
         mediaPlayer.setDataSource(track.songUrl)
         mediaPlayer.prepareAsync()
@@ -50,7 +54,7 @@ class PlayerActivity: AppCompatActivity() {
         tvPlaybackTime = findViewById(R.id.tvPlaybackTime)
         bPlay = findViewById(R.id.bPlay)
 
-        bPlay.setOnClickListener { if (!isPlaying) onMediaPlayerStart() else onMediaPlayerPause() }
+        bPlay.setOnClickListener { if (!mediaPlayer.isPlaying) onMediaPlayerStart() else onMediaPlayerPause() }
         mediaPlayer.setOnCompletionListener { onMediaPlayerCompletion()  }
 
         updatePlaybackTimeRunnable = Runnable {
@@ -72,27 +76,24 @@ class PlayerActivity: AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        if (isPlaying) {
+        if (mediaPlayer.isPlaying) {
             onMediaPlayerPause()
         }
     }
 
 
     private fun onMediaPlayerStart() {
-        isPlaying = true
         mediaPlayer.start()
-        bPlay.setImageDrawable(getDrawable(R.drawable.pause_track))
+        bPlay.setImageDrawable(pauseTrackImg)
         handler.post(updatePlaybackTimeRunnable)
     }
     private fun onMediaPlayerPause() {
-        isPlaying = false
         mediaPlayer.pause()
-        bPlay.setImageDrawable(getDrawable(R.drawable.play_track))
+        bPlay.setImageDrawable(playTrackImg)
         handler.removeCallbacks(updatePlaybackTimeRunnable)
     }
     private fun onMediaPlayerCompletion() {
-        isPlaying = false
-        bPlay.setImageDrawable(getDrawable(R.drawable.play_track))
+        bPlay.setImageDrawable(pauseTrackImg)
         handler.removeCallbacks(updatePlaybackTimeRunnable)
     }
 }

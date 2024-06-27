@@ -2,7 +2,6 @@ package com.machinemaslos.playlistmaker.presentation.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
@@ -105,7 +104,7 @@ class SearchActivity : AppCompatActivity() {
                 searchEditText.clearFocus()
                 handler.removeCallbacks(searchRunnable)
 
-                showTracksOrHistory(SW_TRACKS)
+                showTracksOrHistory(SW_NOTHING)
                 if (searchText.isNotEmpty()) search()
             }
             true
@@ -132,6 +131,8 @@ class SearchActivity : AppCompatActivity() {
             searchEditText.clearFocus()
             showTracksOrHistory(SW_NOTHING)
         }
+
+        showTracksOrHistory(SW_NOTHING)
     }
 
     private fun search() {

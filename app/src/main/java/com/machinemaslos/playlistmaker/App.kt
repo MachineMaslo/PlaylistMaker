@@ -3,10 +3,6 @@ package com.machinemaslos.playlistmaker
 import android.app.Application
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
-import com.google.gson.Gson
-import com.machinemaslos.playlistmaker.search_activity.Track
-import java.util.LinkedList
-import java.util.Queue
 
 const val SHARED_PREFS = "shared_preferences"
 

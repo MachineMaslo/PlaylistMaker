@@ -1,4 +1,4 @@
-package com.machinemaslos.playlistmaker
+package com.machinemaslos.playlistmaker.presentation.ui
 import android.icu.text.SimpleDateFormat
 import android.media.MediaPlayer
 import android.os.Bundle
@@ -9,8 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.appbar.MaterialToolbar
-import com.machinemaslos.playlistmaker.search_activity.ExtendedTrack
-import com.machinemaslos.playlistmaker.search_activity.dpToPx
+import com.machinemaslos.playlistmaker.EX_TRACK
+import com.machinemaslos.playlistmaker.R
+import com.machinemaslos.playlistmaker.data.web.LookUpTrack
 import java.util.Locale
 
 class PlayerActivity: AppCompatActivity() {
@@ -31,7 +32,7 @@ class PlayerActivity: AppCompatActivity() {
         val topAppBar = findViewById<MaterialToolbar>(R.id.topAppBar)
         topAppBar.setNavigationOnClickListener { finish() }
 
-        val track = intent.getSerializableExtra(EX_TRACK) as ExtendedTrack
+        val track = intent.getSerializableExtra(EX_TRACK) as LookUpTrack
 
         mediaPlayer.setDataSource(track.songUrl)
         mediaPlayer.prepareAsync()

@@ -12,8 +12,6 @@ class SearchInteractor(private val activity: SearchActivity) {
     private val searchCase = SearchCase()
 
     fun search() {
-        activity.setTracksLoadingState(true)
-
         searchCase.search(activity.searchText).enqueue(object : Callback<TrackResponse> {
 
                 override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {

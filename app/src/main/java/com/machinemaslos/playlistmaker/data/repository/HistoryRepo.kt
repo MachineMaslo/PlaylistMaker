@@ -10,5 +10,5 @@ class HistoryRepo(context: Context) {
 
     fun getHistory() = historySaver.getHistory()
 
-    fun setHistory(tracks: LinkedList<Track>?) = historySaver.setHistory(tracks)
+    fun setHistory(tracks: LinkedList<Track>) = historySaver.setHistory(tracks)
 }

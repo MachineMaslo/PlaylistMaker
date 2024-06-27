@@ -1,5 +1,6 @@
 package com.machinemaslos.playlistmaker.presentation.ui
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.drawable.Drawable
@@ -23,10 +24,6 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.machinemaslos.playlistmaker.EX_TRACK
 import com.machinemaslos.playlistmaker.R
-import com.machinemaslos.playlistmaker.SEARCH_HISTORY
-import com.machinemaslos.playlistmaker.SEARCH_HISTORY_DEFAULT
-import com.machinemaslos.playlistmaker.SHARED_PREFS
-import com.machinemaslos.playlistmaker.data.dto.HistorySaver
 import com.machinemaslos.playlistmaker.data.web.LookUpTrack
 import com.machinemaslos.playlistmaker.data.web.Track
 import com.machinemaslos.playlistmaker.presentation.presenters.HistoryInteractor
@@ -60,7 +57,7 @@ class SearchActivity : AppCompatActivity() {
     private val pbLoading by lazy { findViewById<ProgressBar>(R.id.pbLoading) }
 
     private val handler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { if (searchText.isNotEmpty()) searchInteractor.search() }
+    private val searchRunnable = Runnable { if (searchText.isNotEmpty()) search() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +92,7 @@ class SearchActivity : AppCompatActivity() {
                     showTracksOrHistory(SW_TRACKS)
 
                     handler.removeCallbacks(searchRunnable)
-                    handler.postDelayed(searchRunnable, 2000)
+                    handler.postDelayed(searchRunnable, RUNNABLE_DELAY)
                 }
             }
 
@@ -109,7 +106,7 @@ class SearchActivity : AppCompatActivity() {
                 handler.removeCallbacks(searchRunnable)
 
                 showTracksOrHistory(SW_TRACKS)
-                if (searchText.isNotEmpty()) searchInteractor.search()
+                if (searchText.isNotEmpty()) search()
             }
             true
         }
@@ -128,13 +125,18 @@ class SearchActivity : AppCompatActivity() {
             showTracksOrHistory(SW_NOTHING)
         }
 
-        updateButton.setOnClickListener { searchInteractor.search() }
+        updateButton.setOnClickListener { search() }
 
         clearHistoryButton.setOnClickListener {
             historyInteractor.clearHistory()
             searchEditText.clearFocus()
             showTracksOrHistory(SW_NOTHING)
         }
+    }
+
+    private fun search() {
+        setTracksLoadingState(true)
+        searchInteractor.search()
     }
 
     //InstanceState
@@ -149,16 +151,22 @@ class SearchActivity : AppCompatActivity() {
     }
 
     // Tracks
-
     fun setTracksLoadingState(isLoading: Boolean) {
-        if (isLoading) pbLoading.visibility = View.VISIBLE
-        else pbLoading.visibility = View.GONE
+        if (isLoading) {
+            showTracksOrHistory(SW_NOTHING)
+            pbLoading.visibility = View.VISIBLE
+        }
+        else {
+            showTracksOrHistory(SW_TRACKS)
+            pbLoading.visibility = View.GONE
+        }
     }
     fun setTracks(newTracks: List<Track>) {
         tracks.clear()
         tracks.addAll(newTracks)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun notifyTrackListChanged() {
         tracksRecyclerView.adapter?.notifyDataSetChanged()
     }
@@ -179,6 +187,10 @@ class SearchActivity : AppCompatActivity() {
         if (showUpdateButton) updateButton.visibility = View.VISIBLE else updateButton.visibility = View.GONE
     }
 
+    private fun hideError() {
+        errorHolder.isVisible = false
+    }
+
     fun showInternetConnectionError() {
         showError(getString(R.string.internet_connection_error_title), getString(R.string.internet_connection_error_subtitle), connectionProblemsDrawable, true)
     }
@@ -194,7 +206,7 @@ class SearchActivity : AppCompatActivity() {
      * SW_HISTORY - History
      */
     fun showTracksOrHistory(show: Int) {
-        errorHolder.visibility = View.GONE
+        hideError()
 
         when (show) {
 
@@ -243,6 +255,8 @@ class SearchActivity : AppCompatActivity() {
         private const val SW_NOTHING = 0
         private const val SW_TRACKS = 1
         private const val SW_HISTORY = 2
+
+        private const val RUNNABLE_DELAY = 2000L
 
         private const val SEARCH_TEXT = "SEARCH_TEXT"
         private const val DEFAULT_TEXT = ""

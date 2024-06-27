@@ -11,9 +11,6 @@ const val SHARED_PREFS = "shared_preferences"
 
 const val NIGHT_MODE = "night_mode"
 
-const val SEARCH_HISTORY = "search_history"
-val SEARCH_HISTORY_DEFAULT = Gson().toJson(LinkedList<Track>())
-
 class App : Application() {
 
     private lateinit var sharedPreferences: SharedPreferences

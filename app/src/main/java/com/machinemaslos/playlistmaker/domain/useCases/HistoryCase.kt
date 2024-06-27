@@ -10,9 +10,9 @@ class HistoryCase(context: Context) {
 
     fun getHistory() = historyRepo.getHistory()
 
-    fun setHistory(tracks: LinkedList<Track>?) = historyRepo.setHistory(tracks)
+    fun setHistory(tracks: LinkedList<Track>) = historyRepo.setHistory(tracks)
 
-    fun clearHistory() = setHistory(null)
+    fun clearHistory() = setHistory(LinkedList<Track>())
 
     fun addTrack(track: Track) {
         val history: LinkedList<Track> = getHistory()
